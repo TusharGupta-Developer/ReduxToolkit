@@ -1,0 +1,104 @@
+Detailed Flow of Todo Application
+
+1. Initial Setup
+
+Redux Slice (todoSlice):
+Initial State:
+todos: An array holding todo items. Each item is an object with properties id and text.
+Reducers:
+addTodo:
+Adds a new todo to the todos array with a unique id and text from the action payload.
+removeTodo:
+Removes a todo from the todos array based on the id provided in the action payload.
+updateTodo:
+Updates the text of a todo item identified by id in the action payload.
+2. AddTodo Component
+
+Purpose:
+
+Manages the input for adding new todos or updating existing todos.
+Props:
+
+editMode:
+Boolean indicating whether the component is in edit mode (true for edit, false for add new).
+editTodo:
+The current todo being edited, which includes id and text.
+cancelEdit:
+Function to reset the component state from edit mode to add new mode.
+State:
+
+input:
+Holds the current value of the input field.
+Flow:
+
+Initialization:
+input State:
+Initializes input with editTodo.text if in edit mode, or with an empty string otherwise.
+Form Submission:
+Handler: addOrUpdateTodoHandler:
+Prevention of Default Action:
+Prevents the default form submission behavior.
+Check Edit Mode:
+If editMode is true:
+Dispatches updateTodo action with the current id and input value.
+Calls cancelEdit to reset editMode and clear the input field.
+If editMode is false:
+Dispatches addTodo action with the input value.
+Reset Input Field:
+Clears the input state after the form is submitted.
+Form Field:
+autoFocus:
+Sets focus to the input field if editMode is true, allowing the user to start typing immediately.
+3. Todo Component
+
+Purpose:
+
+Displays a list of todos and provides options to update or delete each item.
+State:
+
+todos:
+Retrieved from the Redux store using useSelector.
+Flow:
+
+Display Todos:
+
+Maps over the todos array to render each todo item.
+Each todo item displays its text and includes buttons for updating and deleting.
+Update Todo:
+
+Handler: handleEditClick:
+Sets editMode to true.
+Sets editTodoId to the id of the todo to be updated.
+Sets input state to the text of the todo to be updated.
+Button Click:
+When the "Update" button is clicked, handleEditClick is invoked with the selected todo’s id and text.
+Delete Todo:
+
+Button Click:
+When the "Delete" button is clicked, dispatches removeTodo action with the id of the todo to be removed.
+4. Interaction Between Components
+
+Passing Functions as Props:
+The cancelEdit function is passed as a prop from the Todo component to the AddTodo component.
+This function is invoked in the AddTodo component when exiting edit mode, allowing the Todo component to manage the state and functionality.
+5. Summary of Flow
+
+Adding Todos:
+
+User Action:
+Fills out the input field and submits the form.
+Component Behavior:
+If not in edit mode, the new todo is added to the state.
+If in edit mode, the existing todo is updated with new text.
+Editing Todos:
+
+User Action:
+Clicks the "Update" button next to a todo.
+Component Behavior:
+Switches to edit mode and populates the input field with the current todo text for editing.
+Deleting Todos:
+
+User Action:
+Clicks the "Delete" button next to a todo.
+Component Behavior:
+Removes the selected todo from the state.
